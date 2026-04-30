@@ -58,7 +58,7 @@ cp -r examples/opencode-plugin/lib ~/.config/opencode/plugins/openviking/
 cd ~/.config/opencode/plugins/openviking
 npm install
 cd D:\OV-intern\ov-plugins-merge\.opencode\plugins
-opencode plugin ./openviking
+npx opencode plugin ./openviking
 ```
 
 安装后结构应类似：
