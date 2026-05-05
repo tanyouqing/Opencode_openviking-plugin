@@ -57,6 +57,7 @@ cp examples/opencode-plugin/index.mjs examples/opencode-plugin/package.json ~/.c
 cp -r examples/opencode-plugin/lib ~/.config/opencode/plugins/openviking/
 cd ~/.config/opencode/plugins/openviking
 npm install
+\\ 如果无法自动加载插件，可以尝试手动执行
 cd D:\OV-intern\ov-plugins-merge\.opencode\plugins
 npx opencode plugin ./openviking
 ```
@@ -65,7 +66,7 @@ npx opencode plugin ./openviking
 
 ```text
 ~/.config/opencode/plugins/
-├── openviking.mjs
+├── openviking.js
 └── openviking/
     ├── index.mjs
     ├── package.json
@@ -187,29 +188,3 @@ memadd path="file:///home/alice/project/notes.md" reason="project notes"
 可以通过配置里的 `runtime.dataDir` 修改这个目录。
 
 这些是本地运行时文件，不建议提交到版本库。
-
-## 验证
-
-第一版不要求接入真实 OpenViking 自动测试。可以先做静态检查：
-
-```bash
-node --check examples/opencode-plugin/index.mjs
-node --check examples/opencode-plugin/wrappers/openviking.mjs
-node --check examples/opencode-plugin/lib/runtime.mjs
-node --check examples/opencode-plugin/lib/repo-context.mjs
-node --check examples/opencode-plugin/lib/memory-session.mjs
-node --check examples/opencode-plugin/lib/memadd-local.mjs
-node --check examples/opencode-plugin/lib/memory-tools.mjs
-node --check examples/opencode-plugin/lib/memory-recall.mjs
-node --check examples/opencode-plugin/lib/utils.mjs
-node --test examples/opencode-plugin/tests/memadd-local.test.mjs
-```
-
-接入真实 OpenViking 后，建议验证：
-
-- 插件初始化不依赖 `ov` CLI
-- system prompt 能看到已索引仓库
-- 新 OpenCode session 会创建 OpenViking session mapping
-- 用户和 assistant 消息能同步到 OpenViking
-- 自动 recall 能注入 `<relevant-memories>`
-- 九个工具都能返回真实 HTTP 响应

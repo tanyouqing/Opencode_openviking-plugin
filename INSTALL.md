@@ -57,15 +57,16 @@ cp examples/opencode-plugin/index.mjs examples/opencode-plugin/package.json ~/.c
 cp -r examples/opencode-plugin/lib ~/.config/opencode/plugins/openviking/
 cd ~/.config/opencode/plugins/openviking
 npm install
+\\If it cannot be loaded automatically, try running it manually:
 cd D:\OV-intern\ov-plugins-merge\.opencode\plugins
-opencode plugin ./openviking
+npx opencode plugin ./openviking
 ```
 
 After installation, the layout should look like this:
 
 ```text
 ~/.config/opencode/plugins/
-├── openviking.mjs
+├── openviking.js
 └── openviking/
     ├── index.mjs
     ├── package.json
@@ -184,29 +185,3 @@ Possible files include:
 You can change this directory with `runtime.dataDir` in the configuration.
 
 These are local runtime files and should not be committed to the repository.
-
-## Verification
-
-The first version does not require automated tests against a live OpenViking server. You can start with static checks:
-
-```bash
-node --check examples/opencode-plugin/index.mjs
-node --check examples/opencode-plugin/wrappers/openviking.mjs
-node --check examples/opencode-plugin/lib/runtime.mjs
-node --check examples/opencode-plugin/lib/repo-context.mjs
-node --check examples/opencode-plugin/lib/memory-session.mjs
-node --check examples/opencode-plugin/lib/memadd-local.mjs
-node --check examples/opencode-plugin/lib/memory-tools.mjs
-node --check examples/opencode-plugin/lib/memory-recall.mjs
-node --check examples/opencode-plugin/lib/utils.mjs
-node --test examples/opencode-plugin/tests/memadd-local.test.mjs
-```
-
-After connecting to a real OpenViking server, verify that:
-
-- The plugin initializes without relying on the `ov` CLI.
-- Indexed repositories appear in the system prompt.
-- A new OpenCode session creates an OpenViking session mapping.
-- User and assistant messages are synchronized to OpenViking.
-- Automatic recall injects `<relevant-memories>`.
-- All nine tools return real HTTP responses from OpenViking.

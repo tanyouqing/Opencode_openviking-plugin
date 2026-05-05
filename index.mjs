@@ -53,9 +53,6 @@ export async function OpenVikingPlugin({ client, directory }) {
       await recall.injectRelevantMemories(output)
     },
 
-    "session.created": async () => {
-      await repoContext.refreshRepos({ force: true })
-    },
 
     stop: async () => {
       sessionManager.stopAutoCommit()

@@ -35,7 +35,7 @@ examples/opencode-plugin/
 │   ├── memory-recall.mjs
 │   └── utils.mjs
 └── wrappers/
-    └── openviking.mjs
+    └── openviking.js
 ```
 
 该结构中有意不再包含 `skills/openviking/SKILL.md`。原 skill 的行为已经通过工具实现。
@@ -210,31 +210,3 @@ memadd path="file:///home/alice/project/notes.md" reason="project notes"
 - 当启用 `runtime.autoStartServer` 时，会生成 `openviking-server.log`
 
 可以在配置中设置 `runtime.dataDir` 覆盖该目录。
-
-请不要提交本地运行时文件。
-
-## 手动验证
-
-第一版不要求连接真实 OpenViking 后端进行自动化测试。推荐执行以下检查：
-
-```bash
-node --check examples/opencode-plugin/index.mjs
-node --check examples/opencode-plugin/wrappers/openviking.mjs
-node --check examples/opencode-plugin/lib/runtime.mjs
-node --check examples/opencode-plugin/lib/repo-context.mjs
-node --check examples/opencode-plugin/lib/memory-session.mjs
-node --check examples/opencode-plugin/lib/memadd-local.mjs
-node --check examples/opencode-plugin/lib/memory-tools.mjs
-node --check examples/opencode-plugin/lib/memory-recall.mjs
-node --check examples/opencode-plugin/lib/utils.mjs
-node --test examples/opencode-plugin/tests/memadd-local.test.mjs
-```
-
-在 OpenViking server 运行时，建议验证：
-
-- 插件初始化时不要求安装 `ov` CLI。
-- 已索引仓库会出现在 system prompt 中。
-- 新 OpenCode session 会创建 OpenViking session mapping。
-- 用户和 assistant 消息会同步到 OpenViking。
-- 自动 recall 会注入 `<relevant-memories>`。
-- 全部九个工具都能返回真实的 OpenViking HTTP 结果。

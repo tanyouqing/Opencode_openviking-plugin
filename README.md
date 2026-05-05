@@ -35,7 +35,7 @@ examples/opencode-plugin/
 │   ├── memory-recall.mjs
 │   └── utils.mjs
 └── wrappers/
-    └── openviking.mjs
+    └── openviking.js
 ```
 
 There is intentionally no `skills/openviking/SKILL.md`. The former skill behavior is implemented as tools.
@@ -213,31 +213,3 @@ The plugin writes runtime files to `~/.config/opencode/openviking/` by default:
 - `openviking-server.log` when `runtime.autoStartServer` is enabled
 
 Set `runtime.dataDir` in config to override this directory.
-
-Do not commit local runtime files.
-
-## Manual Verification
-
-The first version does not require live OpenViking automated tests. Recommended checks:
-
-```bash
-node --check examples/opencode-plugin/index.mjs
-node --check examples/opencode-plugin/wrappers/openviking.mjs
-node --check examples/opencode-plugin/lib/runtime.mjs
-node --check examples/opencode-plugin/lib/repo-context.mjs
-node --check examples/opencode-plugin/lib/memory-session.mjs
-node --check examples/opencode-plugin/lib/memadd-local.mjs
-node --check examples/opencode-plugin/lib/memory-tools.mjs
-node --check examples/opencode-plugin/lib/memory-recall.mjs
-node --check examples/opencode-plugin/lib/utils.mjs
-node --test examples/opencode-plugin/tests/memadd-local.test.mjs
-```
-
-With a running OpenViking server, verify:
-
-- the plugin initializes without requiring `ov` CLI
-- indexed repositories appear in the system prompt
-- a new OpenCode session creates an OpenViking session mapping
-- user and assistant messages are synced
-- automatic recall injects `<relevant-memories>`
-- all nine tools return real OpenViking HTTP results
