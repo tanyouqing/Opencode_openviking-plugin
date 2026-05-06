@@ -15,7 +15,7 @@
 - 以工具形式暴露仓库 search、grep、glob、read、browse、add、remove 与 queue status 能力。
 - 将每个 OpenCode session 映射到一个 OpenViking session。
 - 将用户与 assistant 的文本消息捕获到 OpenViking。
-- 自动执行后台 session commit，用于记忆抽取。
+- 在生命周期边界提交 session，用于记忆抽取。
 - 自动召回相关记忆，并将其追加到最新用户消息中。
 
 ## 文件结构
@@ -98,6 +98,8 @@ npm install
 export { OpenVikingPlugin, default } from "./openviking/index.mjs"
 ```
 
+这个 wrapper 只用于上面这种源码安装目录结构。npm 包安装会通过 `package.json` 直接加载 `index.mjs`。
+
 ## 配置
 
 创建 `~/.config/opencode/openviking-config.json`：
@@ -111,9 +113,7 @@ export { OpenVikingPlugin, default } from "./openviking/index.mjs"
   "agentId": "",
   "enabled": true,
   "timeoutMs": 30000,
-  "runtime": { "autoStartServer": false },
   "repoContext": { "enabled": true, "cacheTtlMs": 60000 },
-  "autoCommit": { "enabled": true, "intervalMinutes": 10 },
   "autoRecall": {
     "enabled": true,
     "limit": 6,
@@ -157,7 +157,7 @@ export { OpenVikingPlugin, default } from "./openviking/index.mjs"
 
 将当前 OpenCode session 提交到 OpenViking，并触发记忆抽取。
 
-插件也会按照可配置的时间间隔自动执行 commit。
+插件也会在 session 删除、session 错误、上下文压缩和插件关闭等生命周期边界提交。
 
 ### `memgrep`
 
@@ -207,6 +207,5 @@ memadd path="file:///home/alice/project/notes.md" reason="project notes"
 
 - `openviking-memory.log`
 - `openviking-session-map.json`
-- 当启用 `runtime.autoStartServer` 时，会生成 `openviking-server.log`
 
 可以在配置中设置 `runtime.dataDir` 覆盖该目录。
